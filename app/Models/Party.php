@@ -21,12 +21,12 @@ class Party extends Model
         return $this->belongsTo('App\Models\Player','owner_id','id');
     }
 
-    public function membership()
+    public function memberships()
     {
         return $this->hasMany('App\Models\Membership','party_id');   
     }
 
-    public function message()
+    public function messages()
     {
         return $this->hasMany('App\Models\Message','party_id');
         

@@ -17,27 +17,15 @@ class CreatePartiesTable extends Migration
             $table->id();
             $table ->string('name');
            
-            $table->unsignedBigInteger('game_id');                
+            $table->unsignedBigInteger('game_id')->nullable();                
             $table->foreign('game_id', 'fk_party_games')
             ->on('games')
             ->references('id')
-            ->onDelete('restrict');
+            ->onDelete('set null');
 
             $table->unsignedBigInteger('owner_id');                
             $table->foreign('owner_id', 'fk_party_players')
             ->on('players')
-            ->references('id')
-            ->onDelete('restrict');
-
-            $table->unsignedBigInteger('membership_id');                
-            $table->foreign('membership_id', 'fk_party_memberships')
-            ->on('memberships')
-            ->references('id')
-            ->onDelete('restrict');
-
-            $table->unsignedBigInteger('message_id');                
-            $table->foreign('message_id', 'fk_party_messages')
-            ->on('messages')
             ->references('id')
             ->onDelete('restrict');
 

@@ -15,14 +15,13 @@ class CreatePlayersTable extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('username',30)->unique();
+            $table->string('email',60)->unique();
             $table->string('password');
             $table->string('steamUsername')->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
