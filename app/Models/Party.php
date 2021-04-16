@@ -23,8 +23,7 @@ class Party extends Model
 
     public function membership()
     {
-        return $this->hasMany('App\Models\Membership','party_id');
-        
+        return $this->hasMany('App\Models\Membership','party_id');   
     }
 
     public function message()
