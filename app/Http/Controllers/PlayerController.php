@@ -4,82 +4,100 @@ namespace App\Http\Controllers;
 
 use App\Models\Player;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Hash;
 
 class PlayerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function login(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+        $player = Player::where('email', $request->email)->first();
+        if (!$player) {
+            return response()->json([
+                'error' => "Email o password incorrecto"
+            ]); 
+        }
+        if (Hash::check($request->password, $player->password)) {
+            $token =  $player->createToken('Personal Access Token')->accessToken;
+            return response()
+                ->json([
+                    'player' => $player,
+                    'token' => $token,
+                ], 200);
+        } else {
+            return response()->json([
+                'error' => "Email o password incorrecto"
+            ]); 
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function register(Request $request){
+
+        $request->validate([
+            'email' => 'required|string|email',
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+        $request['password']=Hash::make($request['password']);
+        $playerData = request(['email', 'username', 'password']);
+
+        try {
+
+            return Player::create($playerData);
+
+        } catch (QueryException $error) {
+            
+            $eCode = $error->errorInfo[1];
+
+            if($eCode == 1062) {
+                return response()->json([
+                    'error' => "Usuario ya registrado anteriormente"
+                ]);
+            }
+
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getById(Request $request, $id)
     {
-        //
+        $user = $request->user();
+        if ($user['id'] != $id) {
+            return response()->json([
+                'error' => "Sólo puedes ver tus propios datos."
+            ]);
+        }
+        try {
+            return Player::find($id);
+        } catch(QueryException $error) {
+             return $error;
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Player  $player
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Player $player)
+    public function update(Request $request, $id)
     {
-        //
+        $user = $request->user();
+        if ($user['id'] != $id) {
+            return response()->json([
+                'error' => "Sólo puedes modificar tus propios datos."
+            ]);
+        }
+        try {
+            $playerData = request(['email', 'username', 'steamUsername']);
+            return Player::find($id)->update($playerData);
+        } catch(QueryException $error) {
+             return $error;
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Player  $player
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Player $player)
+    public function logout(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Player  $player
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Player $player)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Player  $player
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Player $player)
-    {
-        //
+        $request->user()->token()->revoke();
+        return response()->json([
+            'message' => 'successful-logout'
+        ]);
     }
 }

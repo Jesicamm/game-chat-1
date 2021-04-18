@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PlayerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [PlayerController::class, 'login']);
+Route::post('register', [PlayerController::class, 'register']);
+// Route::post('register', function () {
+//     return response()->json([
+//         'Hello' => "Goodbye"
+//     ]); 
+// });
+  
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('logout', [PlayerController::class, 'logout']);
+    Route::put('player/{id}', [PlayerController::class, 'update']);
+    Route::get('player/{id}', [PlayerController::class, 'getById']);
 });
