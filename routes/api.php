@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\MembershipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,12 @@ Route::post('register', [PlayerController::class, 'register']);
   
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('logout', [PlayerController::class, 'logout']);
-    Route::put('player/{id}', [PlayerController::class, 'update']);
-    Route::get('player/{id}', [PlayerController::class, 'getById']);
+    Route::put('players/{id}', [PlayerController::class, 'update']);
+    Route::get('players/{id}', [PlayerController::class, 'getById']);
+    Route::get('players/{id}/parties', [MembershipController::class, 'getPartiesByPlayer']);
+    Route::get('parties/{id}/players', [MembershipController::class, 'getPlayersInParty']);
+    Route::put('players/{player_id}/parties/{party_id}', [MembershipController::class, 'newMembership']);
+    Route::put('parties/{party_id}/players/{player_id}', [MembershipController::class, 'newMembershipSym']);
+    Route::delete('players/{player_id}/parties/{party_id}', [MembershipController::class, 'delete']);
+    Route::delete('parties/{party_id}/players/{player_id}', [MembershipController::class, 'deleteSym']);
 });
