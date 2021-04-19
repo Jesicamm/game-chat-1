@@ -32,14 +32,14 @@ class MessageController extends Controller
         }
     }
 
-    public function newMessagesForParty(Request $request, $id)
+    public function newMessageForParty(Request $request, $id)
     {
         $request->validate([
             'message' => 'required|string|min:1',
             'date' => 'required',
         ]);
         $user = $request->user();
-        $membership = Membership::where('player_id',$user['id'])->where('party_id',$id);
+        $membership = Membership::where('player_id',$user['id'])->where('party_id',$id)->first();
         $party = Party::find($id);
         if (!$party) {
             return response()->json([

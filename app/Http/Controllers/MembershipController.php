@@ -17,9 +17,11 @@ class MembershipController extends Controller
             ]);
         }
         try {
-            return Membership::where('player_id',$id)
+            $bymembership = Membership::where('player_id',$id)
                 ->join('parties', 'parties.id', 'memberships.party_id')
                 ->join('games', 'games.id', 'parties.game_id')->get();
+            $byownership = $user->parties()->join('games', 'games.id', 'parties.game_id')->get();
+            return [...$bymembership,...$byownership];
         } catch(QueryException $error) {
              return $error;
         }
