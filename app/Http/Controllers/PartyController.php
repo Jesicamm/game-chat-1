@@ -2,84 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Party;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use App\Models\Party;
 
 class PartyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    //Create a new party by game_id
+    
+    public function createParty(Request $request){
+
+        $name = $request->input('name');
+        $game_id = $request->input('game_id');
+        $owner_id = $request->input('owner_id');
+
+        try {
+
+            return Party::create([
+                'name' => $name,
+                'game_id' => $game_id,
+                'owner_id' => $owner_id
+            ]);
+
+        } catch (QueryException $error) {
+            return $error;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Party  $party
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Party $party)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Party  $party
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Party $party)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Party  $party
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Party $party)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Party  $party
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Party $party)
-    {
-        //
-    }
 }
