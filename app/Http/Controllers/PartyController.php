@@ -10,11 +10,11 @@ class PartyController extends Controller
 {
     //Create a new party by game_id
 
-    public function createParty(Request $request){
+    public function createParty(Request $request, $game_id){
 
         $name = $request->input('name');
-        $game_id = $request->input('game_id');
-        $owner_id = $request->input('owner_id');
+        $user = $request->user();
+        $owner_id = $user['id'];
 
         try {
 
@@ -37,12 +37,31 @@ class PartyController extends Controller
         } catch (QueryException $error){
             return $error;
         }
-    }
+    } 
+    
+    public function deleteParty(Request $request, $party_id){
+       
+        $user = $request->user();
+        $owner_id = $user['id'];
+        $party = Party::find($party_id);
 
-    public function deleteParty(Request $request){
-        $idPartyDelete = $request->input('id');
+        if (!$party){
+            return response() -> json([
+                'success' => false,
+                'message' => 'Party does not exist'
+            ]);
+        
+        }
+
+        if ($party['owner_id'] != $owner_id){
+            return response() -> json([
+                'success' => false,
+                'message' => 'This party is not yours'
+            ]);
+
+        }
         try {
-            return Party::where ('id', '=', $idPartyDelete)
+            return $party
             ->delete();
         } catch(QueryException $error){
             return $error;
