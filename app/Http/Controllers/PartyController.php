@@ -9,7 +9,7 @@ use App\Models\Party;
 class PartyController extends Controller
 {
     //Create a new party by game_id
-    
+
     public function createParty(Request $request){
 
         $name = $request->input('name');
@@ -27,6 +27,27 @@ class PartyController extends Controller
         } catch (QueryException $error) {
             return $error;
         }
+    }
+    //Find a party by game_id
+    public function findParty($game_id) {
+        try {
+
+            return Party::all()->where('game_id', '=', $game_id);
+       
+        } catch (QueryException $error){
+            return $error;
+        }
+    }
+
+    public function deleteParty(Request $request){
+        $idPartyDelete = $request->input('id');
+        try {
+            return Party::where ('id', '=', $idPartyDelete)
+            ->delete();
+        } catch(QueryException $error){
+            return $error;
+        }
+        
     }
 
 }

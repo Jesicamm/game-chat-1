@@ -17,9 +17,6 @@ use App\Http\Controllers\GameController;
 */
 
 Route::post('/party', [PartyController::class, 'createParty']);
-Route::get('holi', function () {
-    return response()->json([
-        'Hello' => "Goodbye"
-    ]); 
-});
+Route::get('/party/{id}', [PartyController::class, 'findParty']);
+Route::delete('/parties/{id}', [PartyController::class, 'deleteParty']);
 
