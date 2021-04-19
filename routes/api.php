@@ -7,6 +7,7 @@ use App\Http\Controllers\GameController;
 
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/games/{id}/parties', [PartyController::class, 'createParty']);
     Route::get('/games/{id}/parties', [PartyController::class, 'findParty']);
     Route::delete('/parties/{id}', [PartyController::class, 'deleteParty']);
+    Route::get('parties/{id}/messages', [MessageController::class, 'getMessagesInParty']);
+    Route::post('parties/{id}/messages', [MessageController::class, 'newMessageForParty']);
+    Route::put('messages/{id}', [MessageController::class, 'update']);
+    Route::delete('messages/{id}', [MessageController::class, 'delete']);
 });
