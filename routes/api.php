@@ -18,5 +18,5 @@ use App\Http\Controllers\GameController;
 
 Route::post('/party', [PartyController::class, 'createParty']);
 Route::get('/party/{id}', [PartyController::class, 'findParty']);
-Route::delete('/parties/{id}', [PartyController::class, 'deleteParty']);
+Route::delete('/parties', [PartyController::class, 'deleteParty']);
 
