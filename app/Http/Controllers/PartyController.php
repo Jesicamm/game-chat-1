@@ -47,16 +47,14 @@ class PartyController extends Controller
 
         if (!$party){
             return response() -> json([
-                'success' => false,
-                'message' => 'Party does not exist'
+                'error' => "La party no existe."
             ]);
         
         }
 
         if ($party['owner_id'] != $owner_id){
             return response() -> json([
-                'success' => false,
-                'message' => 'This party is not yours'
+                'error' => "La party no te pertenece."
             ]);
 
         }
