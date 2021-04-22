@@ -97,7 +97,7 @@ class PlayerController extends Controller
     {
         $request->user()->token()->revoke();
         return response()->json([
-            'message' => 'successful-logout'
+            'message' => 'Logout satisfactorio.'
         ]);
     }
 }

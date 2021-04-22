@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Membership;
+use App\Models\Party;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
@@ -29,9 +30,11 @@ class MembershipController extends Controller
     public function getPlayersInParty(Request $request, $id)
     {
         try {
-            return Membership::where('party_id',$id)
+            $bymembership = Membership::where('party_id',$id)
                 ->join('players', 'players.id', '=', 'memberships.player_id')
                 ->select(['username'])->get();
+            $byownership = Party::find($id)->player()->select(['username'])->get();
+            return [...$bymembership,...$byownership];
         } catch(QueryException $error) {
              return $error;
         }

@@ -13,7 +13,7 @@ class MessageController extends Controller
     public function getMessagesInParty(Request $request, $id)
     {
         $user = $request->user();
-        $membership = Membership::where('player_id',$user['id'])->where('party_id',$id);
+        $membership = Membership::where('player_id',$user['id'])->where('party_id',$id)->first();
         $party = Party::find($id);
         if (!$party) {
             return response()->json([
