@@ -6,6 +6,7 @@ This project was bootstrapped with [Laravel](https://github.com/laravel/laravel)
 
 - [About](#about)
 - [Built With](#built)
+- [Getting Started](#started)
 - [Features](#features)
 - [Testing with Postman](#testing)
 - [Authors](#authors)
@@ -19,6 +20,30 @@ This is a educational project to [GeeksHubsAcademy](https://geekshubsacademy.com
 
 
 ## Built With <a name = "built"></a>
+
+<div style="display: flex; height: 50px">
+    <img src="public/icons/docker.png"
+     height= "50px" />
+     <img src="public/icons/laravel.png"
+      height= "50px" />
+     <img src="public/icons/phpimg.png"
+      height= "50px" />
+</div>
+
+
+## Getting Started <a name = "started"></a>
+
+### Heroku :
+The app is deployed in Heroku, you can see it [here](https://game-chat-b.herokuapp.com/)
+
+### If you want to clone, you need to have installed:
+- Php
+- Laravel
+- Composer
+
+### You need to run the next commands:
+- Composer install
+- php artisan serve
 
 
 ## Features <a name = "features"></a>
